@@ -22,7 +22,9 @@
 
             <div class="content_footer">
                 <h2>Redes Sociais</h2>
-                <img class="contact_icons" src="/img/instagram.png" alt="Acesse nosso Instagram">
+                    <a href="https://www.instagram.com/quitanda_dafia/" target="_blank">
+                        <img class="contact_icons" src="/img/instagram.png" alt="Acesse nosso Instagram">
+                    </a>
             </div>
         </div>
     </footer>
