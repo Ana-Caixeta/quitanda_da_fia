@@ -1,42 +1,61 @@
 <template>
-  <div id="container">
-    <!-- Implement logo, search bar and cart button -->
-    <div class="header">
-      <img class="logo" src="/img/logo.png" alt="Logo da Quitanda da Fia">
+    <div id="container">
+        <!-- Implement logo, search bar and cart button -->
+        <div class="header">
+            <button id="logo_button" @click="goToHomePage">
+                <img src="/img/logo.png" alt="Logo da Quitanda da Fia">
+            </button>
 
-      <div class="search_bar">
-        <img id="magnifier" src="/img/magnifier.png" alt="Lupa do campo de pesquisa"/>
-        <input type="text" placeholder="Digite sua pesquisa" />
-        <button class="search_button">Buscar</button>
-      </div>
-    
-      <button class="cart_button">
-        <img id="cart_button_image" src="/img/cart_button.png" alt="Botão para direcionar ao carrinho"/>
-      </button>
-    </div>
+        <div class="search_bar">
+            <img id="magnifier" src="/img/magnifier.png" alt="Lupa do campo de pesquisa"/>
+            <input type="text" placeholder="Digite sua pesquisa" />
+            <button class="search_button">Buscar</button>
+        </div>
+        
+        <button class="cart_button" @click="goToCart">
+            <img id="cart_button_image" src="/img/cart_button.png" alt="Botão para direcionar ao carrinho"/>
+        </button>
+        </div>
 
-    <!-- Implement available categories -->
-    <div class="categories">
-      <div class="category" v-for="category in categories" :key="category">
-        <a :href="`#${category}`">{{ category }}</a>
-      </div>
-    </div>
-  </div>  
+        <!-- Implement available categories -->
+        <div class="categories">
+        <div class="category" v-for="(products, category) in productCategories" :key="category">
+            <a :href="`/#${category}`">{{ category }}</a>
+        </div>
+        </div>
+    </div>  
 </template>
 
 <script>
+import productData from '/db/db.json';
+
 export default {
     name: "Header",
     data() {
         return {
-            categories: ['Carnes', 'Frutas', 'Legumes', 'Verduras'],
+            productCategories: [],
         }
     },
+    created() {
+        this.loadProducts();
+    },
+    methods: {
+        loadProducts() {
+            this.productCategories = productData;
+        },
+        goToCart() {
+            this.$router.push({ path: '/carrinho' });
+        },
+        goToHomePage() {
+            this.$router.push({ path: '/' });
+        }
+    }
 }
 </script>
 
 
 <style scoped>
+/* Customize the main container */
 #container {
     background-color: #264B37;
     display: flex;
@@ -45,10 +64,23 @@ export default {
     border-radius: 0 0 8px 8px;
 }
 
-.logo {
-    width: 15em;
+/* Customize logo_button and logo image size */
+#logo_button {
+    background: none;
+    border: none;
+    padding: 0;
+    margin: 0;
+    cursor: pointer;
+    color: #264B37;
+    font-size: 1.1em;
+    font-weight: bold;
 }
 
+#logo_button img {
+    width: 16em;
+}
+
+/* Customize the arrangement of header elements */
 .header {
     display: flex;
     justify-content: space-between;

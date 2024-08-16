@@ -1,8 +1,7 @@
 <template>
   <div>
     <Header/>
-    <Banner/>
-    <router-view/>
+    <router-view></router-view>
     <Footer/>
   </div>
 </template>
@@ -10,7 +9,6 @@
 <script>
 import Header from "./components/Header.vue";
 import Footer from './components/Footer.vue';
-import Banner from './components/Banner.vue';
 
 export default {
   name: "App",
@@ -22,14 +20,17 @@ export default {
   components: {
     Header,
     Footer,
-    Banner,
   }
 }
 </script>
 
-
-
 <style>
+@import url('https://fonts.cdnfonts.com/css/rawline');
+
+p, h1, h2, h3 {
+  font-family: 'Rawline', sans-serif;                                              
+}
+
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;

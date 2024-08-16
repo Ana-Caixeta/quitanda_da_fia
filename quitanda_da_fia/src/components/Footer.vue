@@ -3,6 +3,7 @@
         <div id="map">
             <iframe src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d15354.67248789388!2d-47.97755!3d-15.8214441!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x935a31fbaf04a2cb%3A0x90a20c40236d5cf4!2sQuitanda%20da%20Fia!5e0!3m2!1spt-BR!2sbr!4v1723405031912!5m2!1spt-BR!2sbr"></iframe>
         </div>
+
         <div id="container_footer">
             <div class="content_footer">
                 <h2>Atendimento</h2>
@@ -15,7 +16,9 @@
             </div>
 
             <div class="content_footer">
-                <img id="logo" src="/img/logo.png" alt="Logo da Quitanda da Fia">
+                <button id="logo_button" @click="goToHomePage">
+                    <img src="/img/logo.png" alt="Logo da Quitanda da Fia">
+                </button>
                 <p>Quitanda Da Fia &copy; - 2024</p>
                 <p>Todos os direitos reservados</p>
             </div>
@@ -36,6 +39,11 @@ export default {
     data() {
         return {
             
+        }
+    },
+    methods: {
+        goToHomePage() {
+            this.$router.push({ path: '/' });
         }
     }
 }
@@ -86,9 +94,21 @@ p {
     width: 2em;
 }
 
-/* Customize logo sizes */
-#logo {
-    width: 15em;
+/* Customize logo button to home page */
+#logo_button {
+    background: none;
+    border: none;
+    padding: 0;
+    margin: 0;
+    cursor: pointer;
+    color: #264B37;
+    font-size: 1.1em;
+    font-weight: bold;
+}
+
+/* Customize logo size */
+#logo_button img {
+    width: 13em;
 }
 
 </style>
