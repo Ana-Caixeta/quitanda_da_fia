@@ -16,7 +16,7 @@
                     <p>R${{ product.price }}</p>
                 </div>
 
-                <button id="add_to_cart">
+                <button id="add_to_cart" @click="addToCart(product)">
                     <div id="cart_component">
                         <img src="/img/cart.png" alt="Imagem carrinho de compras"/>
                         <p>Adicionar</p>
@@ -58,6 +58,24 @@ export default {
         // This method is responsible for increasing the amount of visible products
         showMore(index) {
             this.visibleProducts[index] += 1;
+        },
+        addToCart(product) {
+            let cart = JSON.parse(localStorage.getItem('cart')) || [];
+            
+            // Check if the product is already in the cart
+            const existingProductIndex = cart.findIndex(item => item.id === product.id);
+
+            if (existingProductIndex > -1) {
+                // Product exists, increase quantity
+                cart[existingProductIndex].quantity += 1;
+            } else {
+                // Product doesn't exist, add new
+                product.quantity = 1; // Set initial quantity
+                cart.push(product);
+            }
+
+            localStorage.setItem('cart', JSON.stringify(cart));
+            this.$router.push({ name: 'carrinho' });
         }
     }
 };

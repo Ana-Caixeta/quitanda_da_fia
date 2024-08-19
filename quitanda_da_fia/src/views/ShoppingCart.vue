@@ -2,6 +2,34 @@
     <div id="container">
         <!-- Left side: responsible for showing the user the selected products -->
         <div id="ordered_products">
+            <div v-if="cartItems.length === 0" id="no_product_added">
+                <h2>Nenhum produto adicionado no seu carrinho!</h2>
+                <div>
+                    <button class="home_page" @click="goToHomePage">
+                        <img src="/img/return.png" alt="Seta para voltar à tela inicial">
+                        <p>Comece a escolher</p>
+                    </button>
+                </div>
+            </div>
+
+            <div v-for="(item, index) in cartItems" :key="index" class="product_added">
+                <img id="product_image" :src="item.photo" :alt="'Imagem do produto ' + item.name">
+                <div id="product_information">
+                    <p class="text_green">{{ item.name }}</p>
+                    <p class="text_gray">{{ item.quantity }} {{ item.unit }}</p>
+                    <p class="text_green">R${{ item.price }}</p>
+                </div>
+
+                <div id="amount">
+                    <button @click="updateQuantity(item, -1)">
+                        <img src="/img/subtraction.png" alt="Reduzir quantidade">
+                    </button>
+                    <p>{{ item.quantity }}</p>
+                    <button @click="updateQuantity(item, 1)">
+                        <img src="/img/sum.png" alt="Aumentar quantidade">
+                    </button>
+                </div>
+            </div>
         </div>
 
         <!-- Right side: responsible for showing the form and confirming the order -->
@@ -43,7 +71,7 @@
             <h2>Resumo da compra</h2>
             <div class="elements_side_by_side">
                 <p>Subtotal</p>
-                <p>R$</p>
+                <p>R${{ calculateTotal() }}</p>
             </div>
 
             <div class="elements_side_by_side">
@@ -53,12 +81,12 @@
 
             <div class="elements_side_by_side">
                 <h3>Total</h3>
-                <h3>R$</h3>
+                <h3>R${{ calculateTotal() }}</h3>
             </div>
 
             <div class="elements_side_by_side">
-                <button id="keep_shopping">
-                    Continue comprando
+                <button class="home_page" @click="goToHomePage">
+                        Continue comprando
                 </button>
 
                 <button id="finalize_order">
@@ -76,8 +104,41 @@ export default {
     data() {
         return {
             deliveryMethod: '',
+            cartItems: []
         }
-    }
+    },
+    created() {
+        this.loadCart();
+    },
+    methods: {
+        goToHomePage() {
+            this.$router.push({ path: '/' });
+        },
+        loadCart() {
+            this.cartItems = JSON.parse(localStorage.getItem('cart')) || [];
+        },
+        updateQuantity(item, change) {
+            // Find the index of the item in the cart
+            const index = this.cartItems.findIndex(cartItem => cartItem.id === item.id);
+            if (index !== -1) {
+                // Update the quantity
+                this.cartItems[index].quantity += change;
+                
+                // Remove item if quantity becomes zero or less
+                if (this.cartItems[index].quantity <= 0) {
+                    this.cartItems.splice(index, 1);
+                }
+                
+                // Save the updated cart to localStorage
+                localStorage.setItem('cart', JSON.stringify(this.cartItems));
+            }
+        },
+        calculateTotal() {
+            return this.cartItems.reduce((total, item) => {
+                return total + (parseFloat(item.price) * item.quantity);
+            }, 0).toFixed(2);
+        }
+    },
 }
 </script>
 
@@ -87,6 +148,106 @@ export default {
     border-radius: 8px;
     margin: 1em 0 1em 0;
     display: flex;
+    justify-content: space-between;
+
+}
+
+#ordered_products {
+    padding: 1em;
+    border-radius: 8px;
+    width: 100%;
+}
+
+#no_product_added {
+    background-color: #ffffff;
+    flex-direction: column;
+    display: flex;
+    align-items: center;
+    gap: 2em;
+    padding: 1em 1em 2.3em 1em;
+    border-radius: 8px;
+}
+
+.home_page {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 2em;
+    height: 4em;
+}
+
+.home_page img {
+    width: 2em;
+}
+
+.product_added {
+    display: flex;
+    align-items: center;
+    background-color: #ffffff;
+    border-radius: 8px;
+    margin-bottom: 1em;
+    padding: 1em;
+}
+
+#product_information p {
+    margin: 0.2em 0;
+    font-size: 1em;
+    line-height: 1.2; 
+    text-align: left;
+    padding-left: 1em;
+}
+
+#product_information {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.text_gray {
+    color: rgba(0, 0, 0, 0.50);
+    font-weight: 600;
+}
+
+.text_green {
+    font-weight: bold;
+    color: #264B37;
+}
+
+#amount img {
+    width: 2em;
+    height: 2em;
+}
+
+#amount {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1em;
+}
+
+#amount button {
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    background-color: #ffffff;
+    box-shadow: 1px 1px 1px 1px rgba(0, 0, 0, 0.15);
+}
+
+#product_information {
+    flex-direction: column;
+    display: flex;
+    align-content: left;
+}
+
+#product_image {
+    width: 6em;
+    height: 6em;
+    border-radius: 50%;
+    object-fit: cover;
+    display: block;
+    margin: 0 auto;
+    text-align: center;
 }
 
 #order_information {
@@ -94,6 +255,7 @@ export default {
     border-radius: 8px;
     padding: 1em 3em 3em 3em;
     margin: 1em;
+    width: 27%;
 }
 
 form {
@@ -199,7 +361,7 @@ p {
     font-size: 1.1em;
 }
 
-#keep_shopping, #finalize_order {
+#keep_shopping, #finalize_order, .home_page {
     color: #ffffff;
     font-weight: bold;
     cursor: pointer;
@@ -208,7 +370,7 @@ p {
     font-size: 1em;
 }
 
-#keep_shopping {
+#keep_shopping, .home_page {
     background-color: #2A6A48;
     border: 1px solid #2A6A48;
 }
