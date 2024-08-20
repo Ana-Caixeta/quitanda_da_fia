@@ -8,8 +8,9 @@
             <div class="content_footer">
                 <h2>Atendimento</h2>
                 <div id="contact">
-                    <img class="contact_icons" src="/img/email.png" alt="Entre em contato pelo e-mail">
-                    <p>Contato</p>
+                    <a href="tel:+556135327582" target="_blank">
+                        <img class="contact_icons" src="/img/telephone.png" alt="Ligue para nós: (61) 3532-7582">
+                    </a>
                 </div>
                 
                 <p>Guará I QI 9 - Guará, Brasília - DF, CEP: 70297-400</p>
@@ -25,9 +26,9 @@
 
             <div class="content_footer">
                 <h2>Redes Sociais</h2>
-                    <a href="https://www.instagram.com/quitanda_dafia/" target="_blank">
-                        <img class="contact_icons" src="/img/instagram.png" alt="Acesse nosso Instagram">
-                    </a>
+                <a href="https://www.instagram.com/quitanda_dafia/" target="_blank">
+                    <img class="contact_icons" src="/img/instagram.png" alt="Acesse nosso Instagram">
+                </a>
             </div>
         </div>
     </footer>
@@ -43,7 +44,9 @@ export default {
     },
     methods: {
         goToHomePage() {
-            this.$router.push({ path: '/' });
+            this.$router.push({ path: '/' }).then(() => {
+                window.scrollTo(0, 0);
+            });
         }
     }
 }
@@ -60,6 +63,7 @@ iframe {
     background-color: #264B37;
     border-radius: 8px 8px 0 0;
     display: flex;
+    flex-direction: row;
     justify-content: space-between;
     align-items: center;
     padding: 1em 4em 1em 4em;
@@ -69,7 +73,6 @@ iframe {
 /* Customize the beginning of the content */
 .content_footer {
     flex: 1;
-    padding: 1em;
 }
 
 /* Customize the text color of h2 and p */
@@ -109,6 +112,10 @@ p {
 /* Customize logo size */
 #logo_button img {
     width: 13em;
+}
+
+.contact_icons:hover, #logo_button:hover {
+  opacity: 0.5;
 }
 
 </style>

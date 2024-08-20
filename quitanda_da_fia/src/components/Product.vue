@@ -2,7 +2,7 @@
     <div id="category_products">
         <!-- Organize the section by categories -->
         <div v-for="(products, category, index) in productCategories" :key="category">
-        <h2 id="category">{{ category }}</h2>
+        <h2 class="category" :id="category.toLowerCase().replace(/ /g, '-')">{{ category }}</h2>
         
         <!-- Organize all products within your category -->
         <div id="products_by_category">
@@ -53,11 +53,11 @@ export default {
         // This method is responsible for loading a certain amount of products from db.json
         loadProducts() {
             this.productCategories = productData;
-            this.visibleProducts = Object.keys(productData).map(() => 1);
+            this.visibleProducts = Object.keys(productData).map(() => 4);
         },
         // This method is responsible for increasing the amount of visible products
         showMore(index) {
-            this.visibleProducts[index] += 1;
+            this.visibleProducts[index] += 4;
         },
         addToCart(product) {
             let cart = JSON.parse(localStorage.getItem('cart')) || [];
@@ -90,12 +90,15 @@ export default {
 /* Defining that products from each category are together */
 #products_by_category {
     display: flex;
+    flex-wrap: wrap;
     gap: 1em;
 }
 
 #product_card {
     display: flex;
     flex-direction: column;    
+    align-items: center;
+    justify-content: center;
     border: 1px #333;
     border-radius: 10px;
     box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
@@ -103,7 +106,7 @@ export default {
     margin: 5px;
     padding: 1em;
     width: 20%;
-    height: 20em;
+    height: 22em;
 }
 
 #product_card img {
@@ -118,13 +121,13 @@ export default {
 }
 
 /* Defining category  */
-#category {
+.category {
     text-align: left;
     margin: 2em 0 1.5em 0;
 }
 
 /* Line below the category name */
-#category::after {
+.category::after {
     content: "";
     display: block;
     width: 3em; 
@@ -164,6 +167,10 @@ export default {
     border-radius: 0.5em; 
 }
 
+#division_of_categories button:hover {
+  opacity: 0.97;
+}
+
 #product_information p{
     color: #264B37;
     font-size: 1.2em;
@@ -179,6 +186,10 @@ export default {
     border-radius: 0.8em;
     cursor: pointer;
     padding: 0.3em 1em 0.3em 1em;
+}
+
+#add_to_cart:hover {
+  opacity: 0.9;
 }
 
 #cart_component {

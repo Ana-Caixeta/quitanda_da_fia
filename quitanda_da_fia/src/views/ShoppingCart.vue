@@ -255,7 +255,7 @@ export default {
     border-radius: 8px;
     padding: 1em 3em 3em 3em;
     margin: 1em;
-    width: 27%;
+    width: 35%;
 }
 
 form {
@@ -378,5 +378,9 @@ p {
 #finalize_order {
     background-color: #264B37;
     border: 1px solid #264B37;
+}
+
+#keep_shopping:hover, .home_page:hover, #finalize_order:hover {
+  opacity: 0.8;
 }
 </style>

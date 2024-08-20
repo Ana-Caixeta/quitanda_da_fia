@@ -1,7 +1,12 @@
 <template>
-  <div>
+  <div id="app">
     <Header/>
-    <router-view></router-view>
+    <div id="main_content">
+        <a href="https://wa.me/+5561998468405" target="_blank">
+          <img id="whatsapp_icon" src="/img/whatsapp.png" alt="Entre em contato pelo nosso WhatsApp: (61) 99846-8405">
+        </a>
+        <router-view></router-view>
+    </div>
     <Footer/>
   </div>
 </template>
@@ -37,6 +42,21 @@ p, h1, h2, h3 {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
+  min-height: 100vh;
+  background-color: #ffffff;
+  position: relative;
+}
+
+#main_content {
+  max-width: 1400px;
+  margin: 0 auto;
+  background-color: #ffffff;
+  position: relative;
+  z-index: 1;
+}
+
+Header, Footer {
+  z-index: 2;
 }
 
 nav {
@@ -50,5 +70,23 @@ nav a {
 
 nav a.router-link-exact-active {
   color: #42b983;
+}
+
+#whatsapp_icon {
+  position: fixed;
+  bottom: 1em;
+  right: 0.6em;
+  width: 3em;
+  height: 3em;
+  z-index: 999;
+  cursor: pointer;
+}
+
+#whatsapp_icon:hover {
+  opacity: 0.5;
+}
+
+html {
+  scroll-behavior: smooth;
 }
 </style>

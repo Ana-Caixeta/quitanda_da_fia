@@ -20,7 +20,7 @@
         <!-- Implement available categories -->
         <div class="categories">
         <div class="category" v-for="(products, category) in productCategories" :key="category">
-            <a :href="`/#${category}`">{{ category }}</a>
+            <a :href="`/#${category.toLowerCase().replace(/ /g, '-')}`">{{ category }}</a>
         </div>
         </div>
     </div>  
@@ -78,6 +78,10 @@ export default {
 
 #logo_button img {
     width: 16em;
+}
+
+#logo_button:hover {
+  opacity: 0.8;
 }
 
 /* Customize the arrangement of header elements */
@@ -138,6 +142,10 @@ input {
     cursor: pointer;
 }
 
+.cart_button:hover {
+  opacity: 0.8;
+}
+
 /* Customize cart_button_image width */
 #cart_button_image {
     width: 13em;
@@ -162,7 +170,7 @@ a {
     text-decoration: none;
     color: #ffffff;
     font-weight: bold;
-    font-size: 0.9em;
+    font-size: 0.7em;
 }
 
 a:hover {
