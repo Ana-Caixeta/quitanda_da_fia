@@ -8,23 +8,31 @@
         <router-view></router-view>
     </div>
     <Footer/>
+    <ProductModalVue v-if="showModal" @close="showModal = false"/>
   </div>
 </template>
 
 <script>
 import Header from "./components/Header.vue";
 import Footer from './components/Footer.vue';
+import ProductModalVue from './components/ProductModal.vue';
 
 export default {
   name: "App",
   data() {
     return {
-
+      showModal: false // Variável para controlar a visibilidade do modal
     }
   },
   components: {
     Header,
     Footer,
+    ProductModalVue
+  },
+  methods: {
+    openProductModal() {
+      this.showModal = true;
+    }
   }
 }
 </script>
