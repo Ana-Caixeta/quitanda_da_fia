@@ -1,81 +1,95 @@
 <template>
-    <div id="category_products">
+     <div id="category_products">
         <!-- Organize the section by categories -->
         <div v-for="(products, category, index) in productCategories" :key="category">
-        <h2 class="category" :id="category.toLowerCase().replace(/ /g, '-')">{{ category }}</h2>
-        
-        <!-- Organize all products within your category -->
-        <div id="products_by_category">
+            <h2 class="category" :id="category.toLowerCase().replace(/ /g, '-')">{{ category }}</h2>
+            
+            <!-- Organize all products within your category -->
+            <div id="products_by_category">
 
-            <!-- Product card construction-->
-            <div id="product_card" v-for="product in products.slice(0, visibleProducts[index])" :key="product.id" class="product">
-                <img :src="product.photo" :alt="product.name" />
-                
-                <div id="product_information">
-                    <p id="produc">{{ product.name }} - {{ product.unit }}</p>
-                    <p>R${{ product.price }}</p>
-                </div>
+                <!-- Product card construction-->
+                <div id="product_card" v-for="product in products.slice(0, visibleProducts[index])" :key="product.id" class="product">
+                    <img :src="product.photo" :alt="product.name" @click="openModal(product)" />  <!-- Adicionado o @click -->
 
-                <button id="add_to_cart" @click="addToCart(product)">
-                    <div id="cart_component">
-                        <img src="/img/cart.png" alt="Imagem carrinho de compras"/>
-                        <p>Adicionar</p>
+                    <div id="product_information">
+                        <p id="produc">{{ product.name }} - {{ product.unit }}</p>
+                        <p>R${{ product.price }}</p>
                     </div>
+
+                    <button id="add_to_cart" @click="addToCart(product)">
+                        <div id="cart_component">
+                            <img src="/img/cart.png" alt="Imagem carrinho de compras"/>
+                            <p>Adicionar</p>
+                        </div>
+                    </button>
+                </div>
+            </div>
+
+            <!-- This button is responsible for limiting how many products the user can see -->
+            <div id="division_of_categories">
+                <button v-if="visibleProducts[index] < products.length" @click="showMore(index)">
+                    Veja mais
                 </button>
             </div>
         </div>
 
-        <!-- This button is responsible for limiting how many products the user can see -->
-        <div id="division_of_categories">
-                <button v-if="visibleProducts[index] < products.length" @click="showMore(index)">
-                    Veja mais
-                </button>
-        </div>
-        </div>
+        <!-- Modal para exibir detalhes do produto -->
+        <ProductModal v-if="selectedProduct" :product="selectedProduct" @close="closeModal" />
+
     </div>
+    
+    
+
 </template>
 
 <script>
+import ProductModal from './ProductModal.vue';
 import productData from '/db/db.json';
+
 
 export default {
     name: 'Product',
+    components: {
+        ProductModal
+    },
     data() {
         return {
             productCategories: [],
-            visibleProducts: []
+            visibleProducts: [],
+            selectedProduct: null  // Novo estado para o produto selecionado
         };
     },
     created() {
         this.loadProducts();
     },
     methods: {
-        // This method is responsible for loading a certain amount of products from db.json
         loadProducts() {
             this.productCategories = productData;
             this.visibleProducts = Object.keys(productData).map(() => 4);
         },
-        // This method is responsible for increasing the amount of visible products
         showMore(index) {
             this.visibleProducts[index] += 4;
         },
         addToCart(product) {
             let cart = JSON.parse(localStorage.getItem('cart')) || [];
             
-            // Check if the product is already in the cart
             const existingProductIndex = cart.findIndex(item => item.id === product.id);
 
             if (existingProductIndex > -1) {
-                // Product exists, increase quantity
                 cart[existingProductIndex].quantity += 1;
             } else {
-                // Product doesn't exist, add new
-                product.quantity = 1; // Set initial quantity
+                product.quantity = 1;
                 cart.push(product);
             }
 
             localStorage.setItem('cart', JSON.stringify(cart));
             this.$router.push({ name: 'carrinho' });
+        },
+        openModal(product) {
+            this.selectedProduct = product;
+        },
+        closeModal() {
+            this.selectedProduct = null;
         }
     }
 };
