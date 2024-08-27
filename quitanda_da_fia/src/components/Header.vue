@@ -9,7 +9,7 @@
         <div class="search_bar">
             <img id="magnifier" src="/img/magnifier.png" alt="Lupa do campo de pesquisa"/>
             <input type="text" v-model="searchQuery" placeholder="Digite sua pesquisa"/>
-            <button class="search_button" @click="searchProduct">Buscar</button>
+            <button class="search_button" @click="performSearch">Buscar</button>
         </div>
         
         <button class="cart_button" @click="goToCart">
@@ -49,10 +49,10 @@ export default {
         goToHomePage() {
             this.$router.push({ path: '/' });
         },
-        searchProduct() {
-            const searchTerm = this.$refs.searchInput.value.trim();
-            if (searchTerm) {
-                this.$router.push({ path: '/buscar', query: { q: searchTerm } });
+        performSearch() {
+            // Redirect to the search results page with the search query
+            if (this.searchQuery.trim() !== '') {
+                this.$router.push({ path: '/buscar', query: { q: this.searchQuery } });
             }
         }
     }
