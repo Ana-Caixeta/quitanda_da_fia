@@ -8,8 +8,8 @@
 
         <div class="search_bar">
             <img id="magnifier" src="/img/magnifier.png" alt="Lupa do campo de pesquisa"/>
-            <input type="text" placeholder="Digite sua pesquisa" />
-            <button class="search_button">Buscar</button>
+            <input type="text" v-model="searchQuery" placeholder="Digite sua pesquisa"/>
+            <button class="search_button" @click="searchProduct">Buscar</button>
         </div>
         
         <button class="cart_button" @click="goToCart">
@@ -48,6 +48,12 @@ export default {
         },
         goToHomePage() {
             this.$router.push({ path: '/' });
+        },
+        searchProduct() {
+            const searchTerm = this.$refs.searchInput.value.trim();
+            if (searchTerm) {
+                this.$router.push({ path: '/buscar', query: { q: searchTerm } });
+            }
         }
     }
 }
@@ -113,7 +119,9 @@ export default {
 input {
     border: none;
     font-size: 1.1em;
-    font-weight: bold;
+    font-weight: 600;
+    opacity: 0.7;
+    outline: none;
 }
 
 
@@ -130,7 +138,7 @@ input {
 }
 
 .search_button:hover {
-    color: #e08516;;
+    opacity: 0.8;
 }
 
 /* Customize button to be done within the image limits */
@@ -174,7 +182,7 @@ a {
 }
 
 a:hover {
-    color: #e08516;
+    opacity: 0.8;
 }
 
 </style>

@@ -44,7 +44,7 @@
                     
                     <div ckass="payment_info">
                         <input type="radio" name="payment" id="payment">
-                        <label for="">Pagamento com cartão</label>
+                        <label for="">Pagamento com dinheiro</label>
                     </div>
                 </div>
                 
@@ -253,7 +253,7 @@ export default {
 #order_information {
     background-color: #ffffff;
     border-radius: 8px;
-    padding: 1em 3em 3em 3em;
+    padding: 2em;
     margin: 1em;
     width: 35%;
 }
@@ -269,6 +269,7 @@ form {
 label {
     font-size: 1em;
     color: rgba(0, 0, 0, 0.50);
+    font-weight: 400;
 }
 
 .payment_info, .delivery_choice {

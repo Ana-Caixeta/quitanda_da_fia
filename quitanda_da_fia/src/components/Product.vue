@@ -12,7 +12,7 @@
                     <img :src="product.photo" :alt="product.name" @click="openModal(product)" />  <!-- Adicionado o @click -->
 
                     <div id="product_information">
-                        <p id="produc">{{ product.name }} - {{ product.unit }}</p>
+                        <p>{{ product.name }} - {{ product.unit }}</p>
                         <p>R${{ product.price }}</p>
                     </div>
 
@@ -35,11 +35,7 @@
 
         <!-- Modal para exibir detalhes do produto -->
         <ProductModal v-if="selectedProduct" :product="selectedProduct" @close="closeModal" />
-
     </div>
-    
-    
-
 </template>
 
 <script>
@@ -138,6 +134,7 @@ export default {
 .category {
     text-align: left;
     margin: 2em 0 1.5em 0;
+    color: #264B37;
 }
 
 /* Line below the category name */
@@ -182,7 +179,7 @@ export default {
 }
 
 #division_of_categories button:hover {
-  opacity: 0.97;
+  opacity: 0.98;
 }
 
 #product_information p{
@@ -194,6 +191,7 @@ export default {
 
 #add_to_cart {
     background-color: #264B37;
+    border: 1px solid #264B37;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -212,17 +210,17 @@ export default {
 }
 
 #cart_component img {
-    width: 3em;
-    height: 3em;
+    width: 2em;
+    height: 2em;
     border-radius: 0;
-    margin-right: 1em
+    padding: 0.2em 1.2em 0.2em 1.2em;
 }
 
 #cart_component p {
     color: #ffffff;
     font-size: 1.4em;
     font-weight: bold;
-    margin: 0;
+    margin: 0 1em 0 0;
 }
 
 </style>

@@ -7,13 +7,15 @@
         <div id="container_footer">
             <div class="content_footer">
                 <h2>Atendimento</h2>
-                <div id="contact">
+                <div class="contact">
                     <a href="tel:+556135327582" target="_blank">
                         <img class="contact_icons" src="/img/telephone.png" alt="Ligue para nós: (61) 3532-7582">
+                        <p>(61) 3532-7582</p>
                     </a>
                 </div>
                 
-                <p>Guará I QI 9 - Guará, Brasília - DF, CEP: 70297-400</p>
+                <p>Guará I QI 9 - Guará, Brasília - DF</p>
+                <p>CEP: 70297-400</p>
             </div>
 
             <div class="content_footer">
@@ -26,9 +28,12 @@
 
             <div class="content_footer">
                 <h2>Redes Sociais</h2>
-                <a href="https://www.instagram.com/quitanda_dafia/" target="_blank">
-                    <img class="contact_icons" src="/img/instagram.png" alt="Acesse nosso Instagram">
-                </a>
+                <div class="contact">
+                    <a href="https://www.instagram.com/quitanda_dafia/" target="_blank">
+                        <img class="contact_icons" src="/img/instagram.png" alt="Acesse nosso Instagram">
+                        <p>@quitanda_dafia</p>
+                    </a>
+                </div>
             </div>
         </div>
     </footer>
@@ -85,7 +90,7 @@ p {
 }
 
 /* Customize when there is icon and text together */
-#contact {
+.contact {
     display: flex;
     align-items: center;
     justify-content: center; 
@@ -114,8 +119,15 @@ p {
     width: 13em;
 }
 
-.contact_icons:hover, #logo_button:hover {
+a:hover, #logo_button:hover {
   opacity: 0.5;
+}
+
+a {
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 1em;
 }
 
 </style>
