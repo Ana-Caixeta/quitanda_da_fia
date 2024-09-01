@@ -67,7 +67,9 @@
   
         localStorage.setItem('cart', JSON.stringify(cart));
         this.$emit('close'); // Optionally close the modal after adding to cart
-        this.$router.push({ name: 'carrinho' }); // Redirect to cart page
+        this.$router.push({ path: '/carrinho' }).then(() => {
+          window.scrollTo(0, 0);
+        }); // Redirect to cart page
       }
     }
   }

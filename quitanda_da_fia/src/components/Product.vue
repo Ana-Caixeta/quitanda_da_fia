@@ -79,7 +79,9 @@ export default {
             }
 
             localStorage.setItem('cart', JSON.stringify(cart));
-            this.$router.push({ name: 'carrinho' });
+            this.$router.push({ path: '/carrinho' }).then(() => {
+                window.scrollTo(0, 0);
+            });
         },
         openModal(product) {
             this.selectedProduct = product;

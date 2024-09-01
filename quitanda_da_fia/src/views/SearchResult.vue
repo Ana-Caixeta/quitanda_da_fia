@@ -1,7 +1,7 @@
 <template>
   <div>
     <div v-if="searchResults.length === 0" id="no_product_found">
-        <h2>Nenhum produto encontrado para a pesquisa {{ searchTerm ? searchTerm: ""}}</h2>
+        <h2>Nenhum produto encontrado para a pesquisa {{ searchTerm ? searchTerm : "" }}</h2>
         <div>
             <button class="home_page" @click="goToHomePage">
                 <img src="/img/return.png" alt="Seta para voltar à tela inicial">
@@ -33,7 +33,7 @@
   </div>
 </template>
 
-<script>    
+<script>
   import productData from '/db/db.json';
 
   export default {
@@ -42,7 +42,6 @@
       return {
         searchTerm: '',
         searchResults: [],
-        visibleProducts: [],
       };
     },
     created() {
@@ -69,18 +68,32 @@
         this.$router.push({ path: '/' });
       },
       performSearch() {
-        // Filter products based on searchTerm
         this.searchResults = [];
-        for (const category in productData) {
-          if (Object.prototype.hasOwnProperty.call(productData, category)) {
-            this.searchResults.push(...productData[category].filter(product => 
-              product.name.toLowerCase().includes(this.searchTerm.toLowerCase())
-            ));
+        if (this.searchTerm.trim() !== '') {
+          for (const category in productData) {
+            if (Object.prototype.hasOwnProperty.call(productData, category)) {
+              this.searchResults.push(...productData[category].filter(product =>
+                product.name.toLowerCase().includes(this.searchTerm.toLowerCase())
+              ));
+            }
           }
         }
+      },
+    },
+    watch: {
+      '$route.query.q'(newQuery) {
+        this.searchTerm = newQuery || '';
+        this.performSearch();
       }
+    },
+    beforeRouteUpdate(to, from, next) {
+      if (to.query.q !== from.query.q) {
+        this.searchTerm = to.query.q || '';
+        this.performSearch();
+      }
+      next();
     }
-  }
+  };
 </script>
 
 <style scoped>

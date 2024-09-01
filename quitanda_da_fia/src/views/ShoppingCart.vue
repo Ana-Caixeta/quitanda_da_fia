@@ -89,7 +89,7 @@
                         Continue comprando
                 </button>
 
-                <button id="finalize_order">
+                <button id="finalize_order" @click="finishOrder">
                     Finalizar pedido
                 </button>
             </div>
@@ -137,7 +137,7 @@ export default {
             return this.cartItems.reduce((total, item) => {
                 return total + (parseFloat(item.price) * item.quantity);
             }, 0).toFixed(2);
-        }
+        },
     },
 }
 </script>
