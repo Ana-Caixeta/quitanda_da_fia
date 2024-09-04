@@ -89,22 +89,27 @@
                         Continue comprando
                 </button>
 
-                <button id="finalize_order" @click="finishOrder">
+                <button id="finalize_order" @click="showOrderModal = true">
                     Finalizar pedido
                 </button>
             </div>
         </div>
+        <OrderModal v-if="showOrderModal" @close="showOrderModal = false" />
     </div>
 </template>
 
 <script>
-
+import OrderModal from '@/components/OrderModal.vue';
 export default {
     name: "ShoppingCart",
+    components: {
+        OrderModal
+    },
     data() {
         return {
             deliveryMethod: '',
-            cartItems: []
+            cartItems: [],
+            showOrderModal: false
         }
     },
     created() {
