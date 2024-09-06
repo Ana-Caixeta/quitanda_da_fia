@@ -35,37 +35,42 @@
         <!-- Right side: responsible for showing the form and confirming the order -->
         <div id="order_information">
             <form action="">
+                <label class="main_label" for="name">Nome</label>
+                <input type="text" id="name" placeholder="Digite seu nome" v-model="name" required>
+
+                <label class="main_label" for="tel_number">Telefone de contato</label>
+                <input type="tel" id="tel_number" placeholder="(99)99999-9999" v-model="tel_number" required>
+
                 <h3>Tipo de pagamento</h3>
                 <div id="payment">
                     <div class="payment_info">
-                        <input type="radio" name="payment" id="payment">
-                        <label for="">Pagamento com cartão</label>
+                    <input type="radio" name="payment" id="payment_card" value="card" v-model="payment">
+                    <label for="payment_card">Pagamento com cartão</label>
                     </div>
-                    
-                    <div ckass="payment_info">
-                        <input type="radio" name="payment" id="payment">
-                        <label for="">Pagamento com dinheiro</label>
+
+                    <div class="payment_info">
+                    <input type="radio" name="payment" id="payment_cash" value="cash" v-model="payment">
+                    <label for="payment_cash">Pagamento com dinheiro</label>
                     </div>
                 </div>
-                
+
                 <div id="delivery">
                     <h3>Informações de entrega</h3>
                     <div class="delivery_choice">
                         <input type="radio" name="delivery" id="pickup" value="pickup" v-model="deliveryMethod">
                         <label for="pickup">Retirada na loja</label>
                     </div>
-                    
+        
                     <div class="delivery_choice">
                         <input type="radio" name="delivery" id="delivery" value="delivery" v-model="deliveryMethod">
                         <label for="delivery">Entrega</label>
                     </div>
 
-                    <!-- Show text input field only if "Entrega" was selected -->
-                    <input v-if="deliveryMethod === 'delivery'" type="text" name="address" id="address" placeholder="Endereço da entrega">
+                    <div v-if="deliveryMethod === 'delivery'">
+                        <label for="address">Endereço da entrega</label>
+                        <input type="text" name="address" id="address" v-model="address" placeholder="Digite o endereço da entrega">
+                    </div>
                 </div>
-
-                <h3>Telefone para contato</h3>
-                <input type="tel" name="tel_number" id="tel_number" placeholder="(99)99999-9999">
             </form>
 
             <h2>Resumo da compra</h2>
@@ -89,12 +94,12 @@
                         Continue comprando
                 </button>
 
-                <button id="finalize_order" @click="showOrderModal = true">
+                <button id="finalize_order" @click="finalizeOrder">
                     Finalizar pedido
                 </button>
             </div>
         </div>
-        <OrderModal v-if="showOrderModal" @close="showOrderModal = false" />
+        <OrderModal v-if="showOrderModal" @close="showOrderModal = false" @submit="submitOrder"/>
     </div>
 </template>
 
@@ -109,7 +114,11 @@ export default {
         return {
             deliveryMethod: '',
             cartItems: [],
-            showOrderModal: false
+            showOrderModal: false,
+            name: '',
+            telNumber: '',
+            paymentType: '',
+            address: ''
         }
     },
     created() {
@@ -142,6 +151,78 @@ export default {
             return this.cartItems.reduce((total, item) => {
                 return total + (parseFloat(item.price) * item.quantity);
             }, 0).toFixed(2);
+        },
+        finalizeOrder() {
+            if (this.cartItems.length === 0) {
+                alert("Seu carrinho está vazio!");
+                return;
+            }
+            if (this.deliveryMethod === 'delivery' && this.address === '') {
+                alert("Por favor, insira o endereço de entrega.");
+                return;
+            }
+            if (this.name === '') {
+                alert("Por favor, insira o nome.");
+                return;
+            }
+            if (this.tel_number === '') {
+                alert("Por favor, insira o número de telefone para contato.");
+                return;
+            }
+            if (this.payment === '') {
+                alert("Por favor, insira escolha a forma de pagamento.");
+                return;
+            }
+            if (this.delivery === '') {
+                alert("Por favor, insira escolha a informações de entrega.");
+                return;
+            }
+            else {
+                this.showOrderModal = true;
+            }
+            
+        },
+        submitOrder() {
+            const orderDetails = this.generateOrderDetails();
+            this.sendToWhatsApp(orderDetails);
+        },
+        generateOrderDetails() {
+            const paymentText = this.payment === 'card' ? 'cartão' : 'dinheiro';
+            const deliveryText = this.delivery === 'delivery' ? `${this.address}` : 'retirada na loja';
+            const phoneText = `${this.tel_number}`;
+            const nameText = `${this.name}`;
+            const addressText = `${this.address}`;
+
+            let cartDetails = this.cartItems.map(item => {
+                return `${item.quantity}x ${item.name} (${item.unit}) - R$${item.price * item.quantity}`;
+            }).join('\n');
+
+            return `
+Venho de https://quitandadafia.com.br
+
+📦 *Tipo de serviço:* ${deliveryText}
+📍 *Endereco:* ${addressText}
+
+✨ *Nome:* ${nameText}
+📱 *Telefone:* ${phoneText}
+
+📋 *Pedido:*
+${cartDetails}
+
+🧾 *Custos*
+🛍️ *Total dos produtos:* R$${this.calculateTotal()}
+🚚 *Valor da entrega:* GRÁTIS
+💸 *Total a pagar:* R$${this.calculateTotal()}
+💰 *Tipo de pagamento:* ${paymentText}
+
+🕒 Após enviar o pedido, aguarde que já iremos lhe atender.
+            `;
+        },
+        sendToWhatsApp(orderDetails) {
+            const encodedMessage = encodeURIComponent(orderDetails);
+            const phoneNumber = "+5561999999999"; // Change numbeer to Quitanda da Fia
+            const whatsappUrl = `https://api.whatsapp.com/send?phone=${phoneNumber}&text=${encodedMessage}`;
+            window.location.href = whatsappUrl;
         },
     },
 }
@@ -318,6 +399,10 @@ input[type="radio"]:checked + label {
     font-weight: bold; 
 }
 
+input[type="text"], input[type="tel"]{
+    margin: 1em 0 1em 0;
+}
+
 #address {
     width: 100%;
     height: 5em;
@@ -339,7 +424,7 @@ input[type="radio"]:checked + label {
     padding: 0.3em 0 0 0.3em;
 }
 
-#tel_number {
+#tel_number, #name {
     width: 100%;
     height: 2em;
     font-size: 0.8em;
@@ -358,9 +443,14 @@ input[type="radio"]:checked + label {
     gap: 1em;
 }
 
-h2, h3 {
+h2, h3, .main_label {
     text-align: left;
     color: #264B37;
+}
+
+.main_label {
+    font-size: 1.5rem;
+    font-weight: bold;
 }
 
 p {

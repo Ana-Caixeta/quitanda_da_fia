@@ -10,7 +10,7 @@
                     Nossa equipe estará pronta para finalizar a compra e tirar 
                     qualquer dúvida que você possa ter.
                 </p>
-                <button @click="redirectToWhatsApp">
+                <button @click="confirmOrder">
                     <img src="/img/whatsapp_white.png" alt="Botão para enviar para WhatsApp">
                     <p>Enviar para WhatsApp</p>
                 </button>
@@ -26,8 +26,8 @@ export default {
         closeModal() {
             this.$emit('close');
         },
-        redirectToWhatsApp() {
-            window.location.href = 'https://api.whatsapp.com/send?phone=+5561999038103';
+        confirmOrder() {
+            this.$emit('submit');
         }
     }
 }

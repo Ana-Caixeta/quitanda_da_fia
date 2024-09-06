@@ -8,8 +8,8 @@
             <div id="products_by_category">
 
                 <!-- Product card construction-->
-                <div id="product_card" v-for="product in products.slice(0, visibleProducts[index])" :key="product.id" class="product">
-                    <img :src="product.photo" :alt="product.name" @click="openModal(product)" />  <!-- Adicionado o @click -->
+                <div id="product_card" v-for="product in products.slice(0, visibleProducts[index])" :key="product.id" class="product" @click="openModal(product)">
+                    <img :src="product.photo" :alt="product.name"/>  <!-- Adicionado o @click -->
 
                     <div id="product_information">
                         <p>{{ product.name }} - {{ product.unit }}</p>
@@ -119,6 +119,7 @@ export default {
     padding: 1em;
     width: 20%;
     height: 22em;
+    cursor: pointer;
 }
 
 #product_card img {

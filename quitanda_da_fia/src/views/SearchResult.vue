@@ -1,7 +1,7 @@
 <template>
   <div>
     <div v-if="searchResults.length === 0" id="no_product_found">
-        <h2>Nenhum produto encontrado para a pesquisa {{ searchTerm ? searchTerm : "" }}</h2>
+        <h2>Nenhum produto encontrado para a pesquisa "{{ searchTerm ? searchTerm : "" }}"</h2>
         <div>
             <button class="home_page" @click="goToHomePage">
                 <img src="/img/return.png" alt="Seta para voltar à tela inicial">
