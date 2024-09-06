@@ -188,10 +188,10 @@ export default {
         },
         generateOrderDetails() {
             const paymentText = this.payment === 'card' ? 'cartão' : 'dinheiro';
-            const deliveryText = this.delivery === 'delivery' ? `${this.address}` : 'retirada na loja';
+            const deliveryText = this.deliveryMethod === 'delivery' ? 'entrega no endereço informado' : 'retirada na loja';
             const phoneText = `${this.tel_number}`;
             const nameText = `${this.name}`;
-            const addressText = `${this.address}`;
+            const addressText = this.deliveryMethod != 'delivery' ? 'https://maps.app.goo.gl/VHF5NrVGuwFd1yfL7' : `${this.address}`;;
 
             let cartDetails = this.cartItems.map(item => {
                 return `${item.quantity}x ${item.name} (${item.unit}) - R$${item.price * item.quantity}`;
@@ -220,7 +220,7 @@ ${cartDetails}
         },
         sendToWhatsApp(orderDetails) {
             const encodedMessage = encodeURIComponent(orderDetails);
-            const phoneNumber = "+5561999999999"; // Change numbeer to Quitanda da Fia
+            const phoneNumber = "+5561999038103"; // Change numbeer to Quitanda da Fia
             const whatsappUrl = `https://api.whatsapp.com/send?phone=${phoneNumber}&text=${encodedMessage}`;
             window.location.href = whatsappUrl;
         },
