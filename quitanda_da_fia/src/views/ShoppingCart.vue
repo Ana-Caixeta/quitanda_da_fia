@@ -57,16 +57,16 @@
                 <div id="delivery">
                     <h3>Informações de entrega</h3>
                     <div class="delivery_choice">
-                        <input type="radio" name="delivery" id="pickup" value="pickup" v-model="deliveryMethod">
+                        <input type="radio" name="delivery" id="pickup" value="pickup" v-model="delivery">
                         <label for="pickup">Retirada na loja</label>
                     </div>
         
                     <div class="delivery_choice">
-                        <input type="radio" name="delivery" id="delivery" value="delivery" v-model="deliveryMethod">
+                        <input type="radio" name="delivery" id="delivery" value="delivery" v-model="delivery">
                         <label for="delivery">Entrega</label>
                     </div>
 
-                    <div v-if="deliveryMethod === 'delivery'">
+                    <div v-if="delivery === 'delivery'">
                         <label for="address">Endereço da entrega</label>
                         <input type="text" name="address" id="address" v-model="address" placeholder="Digite o endereço da entrega">
                     </div>
@@ -112,13 +112,13 @@ export default {
     },
     data() {
         return {
-            deliveryMethod: '',
             cartItems: [],
             showOrderModal: false,
             name: '',
-            telNumber: '',
-            paymentType: '',
-            address: ''
+            tel_number: '',
+            payment: '',
+            address: '',
+            delivery: ''
         }
     },
     created() {
@@ -157,10 +157,6 @@ export default {
                 alert("Seu carrinho está vazio!");
                 return;
             }
-            if (this.deliveryMethod === 'delivery' && this.address === '') {
-                alert("Por favor, insira o endereço de entrega.");
-                return;
-            }
             if (this.name === '') {
                 alert("Por favor, insira o nome.");
                 return;
@@ -177,10 +173,11 @@ export default {
                 alert("Por favor, insira escolha a informações de entrega.");
                 return;
             }
-            else {
-                this.showOrderModal = true;
+            if (this.delivery === 'delivery' && this.address === '') {
+                alert("Por favor, insira o endereço de entrega.");
+                return;
             }
-            
+            this.showOrderModal = true;
         },
         submitOrder() {
             const orderDetails = this.generateOrderDetails();
@@ -188,10 +185,10 @@ export default {
         },
         generateOrderDetails() {
             const paymentText = this.payment === 'card' ? 'cartão' : 'dinheiro';
-            const deliveryText = this.deliveryMethod === 'delivery' ? 'entrega no endereço informado' : 'retirada na loja';
+            const deliveryText = this.delivery === 'delivery' ? 'entrega' : 'retirada na loja';
             const phoneText = `${this.tel_number}`;
             const nameText = `${this.name}`;
-            const addressText = this.deliveryMethod != 'delivery' ? 'https://maps.app.goo.gl/VHF5NrVGuwFd1yfL7' : `${this.address}`;;
+            const addressText = this.delivery != 'delivery' ? 'https://maps.app.goo.gl/VHF5NrVGuwFd1yfL7' : `${this.address}`;;
 
             let cartDetails = this.cartItems.map(item => {
                 return `${item.quantity}x ${item.name} (${item.unit}) - R$${item.price * item.quantity}`;
