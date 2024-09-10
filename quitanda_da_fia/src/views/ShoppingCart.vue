@@ -218,7 +218,7 @@ ${cartDetails}
         sendToWhatsApp(orderDetails) {
             const encodedMessage = encodeURIComponent(orderDetails);
             const phoneNumber = "+5561999038103"; // Change numbeer to Quitanda da Fia
-            const whatsappUrl = `https://api.whatsapp.com/send?phone=${phoneNumber}&text=${encodedMessage}`;
+            const whatsappUrl = `https://web.whatsapp.com/send?phone=${phoneNumber}&text=${encodedMessage}`;
             window.location.href = whatsappUrl;
         },
     },
