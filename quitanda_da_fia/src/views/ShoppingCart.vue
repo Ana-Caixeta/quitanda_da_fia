@@ -195,7 +195,7 @@ export default {
             }).join('\n');
 
             return `
-Venho de https://quitandadafia.com.br
+Venho de https://main--quitandadafia.netlify.app/
 
 📦 *Tipo de serviço:* ${deliveryText}
 📍 *Endereco:* ${addressText}
